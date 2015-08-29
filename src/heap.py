@@ -8,34 +8,35 @@ class Heap(object):
     def heapify(self, values):
         #no this technically works, but a really hacky implementation
         self.internalheap = values[:]
-        for i in range(1, len(self.internalheap)):
-            self.__heapify__(0)
+        self.comparisons = 0
+        for i in range(0, len(self.internalheap))[::-1]:
+            self.__heapify__(i)
+
+        print("Comparisons {}".format(self.comparisons))
 
     def __heapify__(self, idx):
-        if len(self.internalheap)-1 < idx:
-            return None
-        curitem = self.internalheap[idx]
         leftidx = idx*2 + 1
         rightidx = idx*2 + 2
-        left = self.__heapify__(leftidx)
-        right = self.__heapify__(rightidx)
+        left = self.internalheap[leftidx] if leftidx < len(self.internalheap) else None
+        right = self.internalheap[rightidx] if rightidx < len(self.internalheap) else None
+        largest = idx
 
+        if left != None:
+            self.comparisons += 1
 
+        if right != None:
+            self.comparisons += 1
+            
+        if left != None and left < self.internalheap[largest]:
+            largest = leftidx
 
-        if (curitem <= left or left == None) and (curitem <= right or right == None):
-            return curitem
-        elif left != None and left < curitem and (left < right or right == None):
-            self.internalheap[idx], self.internalheap[leftidx] = self.internalheap[leftidx], self.internalheap[idx]
-            return left
-        else:
-            self.internalheap[idx], self.internalheap[rightidx] = self.internalheap[rightidx], self.internalheap[idx]
-            return right
+        if right != None and right < self.internalheap[largest]:
+            largest = rightidx
 
-        #0 - 0
-        #1, 2 - 1
-        #3, 4, 5, 6 - 2
-        #7, 8, 9, 10, 11, 12, 13, 14 - 3
-
+        if largest != idx:
+            print("Swapping {} with {}".format(self.internalheap[idx], self.internalheap[largest]))
+            self.internalheap[idx], self.internalheap[largest] = self.internalheap[largest], self.internalheap[idx]
+            self.__heapify__(largest)
 
     def findMax(self):
         pass
