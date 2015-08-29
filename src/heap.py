@@ -1,13 +1,14 @@
 class Heap(object):
-    def __init__(self):
-        pass
+    def __init__(self, values):
+        self.internalheap = values[:]
+        self.heapify()
 
     def getHeap(self):
         return self.internalheap
 
-    def heapify(self, values):
+    def heapify(self):
         #no this technically works, but a really hacky implementation
-        self.internalheap = values[:]
+
         self.comparisons = 0
         for i in range(0, len(self.internalheap))[::-1]:
             self.__heapify__(i)
@@ -26,7 +27,7 @@ class Heap(object):
 
         if right != None:
             self.comparisons += 1
-            
+
         if left != None and left < self.internalheap[largest]:
             largest = leftidx
 
@@ -38,14 +39,15 @@ class Heap(object):
             self.internalheap[idx], self.internalheap[largest] = self.internalheap[largest], self.internalheap[idx]
             self.__heapify__(largest)
 
-    def findMax(self):
-        pass
 
     def findMin(self):
-        pass
+        return self.internalheap[0] if len(self.internalheap) > 0 else None
 
     def insert(self, item):
-        pass
+        self.internalheap.append(item)
+        self.heapify()
 
     def replace(self, item):
-        pass
+        if len(self.internalheap) > 0:
+            self.internalheap[0] = item
+            self.__heapify__(0)
