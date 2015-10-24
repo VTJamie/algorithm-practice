@@ -25,6 +25,8 @@ class RedBlackNode(object):
             return self.parent.get_root()
 
     def print_tree(self, numindent=0):
+        if numindent == 0:
+            print '--------------------------------------------------------------------------------'
         if self.right is not None:
             self.right.print_tree(numindent+1)
         print('{}{} {}'.format('\t'*numindent, self.value, 'Red' if self.red else 'Black'))
@@ -112,7 +114,7 @@ class RedBlackNode(object):
         return not self.is_parent_left_child()
 
     def fix_tree(self):
-        if self.get_grand_parent() is not None and self.parent is not None and self.red:
+        if self.get_grand_parent() is not None and self.parent is not None and self.red and self.parent.red:
             if self.is_uncle_red(): #CASE 1
                 self.parent.red = False
                 if self.get_uncle() is not None:
@@ -137,13 +139,20 @@ class RedBlackNode(object):
 
 
 if __name__ == '__main__':
-    root = RedBlackNode(5)
+    root = RedBlackNode(10)
+
+    root.get_root().insert(9)
+    root.get_root().insert(8)
+    root.get_root().insert(7)
+    root.get_root().insert(6)
+    root.get_root().insert(5)
     root.get_root().insert(4)
     root.get_root().insert(3)
-    #root.get_root().print_tree()
     root.get_root().insert(2)
 
     root.get_root().insert(1)
 
+    root.get_root().print_tree()
+    root.get_root().insert(11)
     root.get_root().print_tree()
 
